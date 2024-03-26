@@ -22,6 +22,10 @@ class Hashmap:
         h = self.get_hash(key)
         self.arr[h] = None
 
+    def delete2(self, key): #-------> __delitem__
+        h = self.get_hash(key)
+        self.arr[h] = None
+
 
 t = Hashmap()
 t.add('march 6', 240) #------> t['march 6'] = 240
