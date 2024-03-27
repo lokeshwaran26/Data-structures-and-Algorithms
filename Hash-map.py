@@ -1,7 +1,7 @@
 class Hashmap:
     def __init__(self):
-        self.Max = 100
-        self.arr = [None for i in range(self.Max)]
+        self.Max = 10
+        self.arr = [[] for i in range(self.Max)]
 
     def get_hash(self, key):
         h = 0
@@ -9,24 +9,40 @@ class Hashmap:
             h += ord(char)
         return h % self.Max
 
-    def add(self, key, value):  # ------------> __setitem__
+    def __setitem__(self, key, value):
         h = self.get_hash(key)
-        self.arr[h] = value
-        print(self.arr)
+        # self.arr[h] = value
+        # print(self.arr)
+        found = False
+        for idx, element in enumerate(self.arr[h]):
+            if len(element) == 2 and element[0] == key:
+                self.arr[h][idx] = (key, value)
+                found = True
+                break
+        if not found:
+            self.arr[h].append((key,value))
 
-    def get(self, key):  # --------->__getitem__
+    def __getitem__(self, key):
         h = self.get_hash(key)
-        print(self.arr[h])
+        for element in self.arr[h]:
+            if element[0] == key:
+                return element[1]
 
-    def delete(self, key): #-------> __delitem__
+    def __delitem__(self, key):
         h = self.get_hash(key)
-        self.arr[h] = None
-
-    def delete2(self, key): #-------> __delitem__
-        h = self.get_hash(key)
-        self.arr[h] = None
+        for idx, element in enumerate(self.arr[h]):
+            if  element[0] == key:
+                del self.arr[h][idx] 
+                break
 
 
 t = Hashmap()
-t.add('march 6', 240) #------> t['march 6'] = 240
-t.get('march 6')
+t['march 6'] = 120
+t['march 6'] = 78
+t['march 9'] = 4
+t['march 17'] = 440 
+del t['march 17']
+
+print(t.arr)
+
+
