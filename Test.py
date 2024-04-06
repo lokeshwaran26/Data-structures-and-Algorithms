@@ -1,59 +1,54 @@
-class Node:
-    def __init__(self,data = None,next = None):
+class TreeNode:
+    def __init__(self,data):
         self.data = data
-        self.next = next
+        self.children = []
+        self.parent = None
 
-class Linkedlist:
-    def __init__(self):
-        self.head = None
-    
-    def insert_end(self, data):
-        if self.head is None:
-            node = Node(data,None)
-            self.head = node
-            return
-        
-        node = Node(data,None)
-        itr = self.head
-        while itr:
-            itr = itr.next
-        itr.next = node
-    def insert_big(self,data):
-        node = Node(data, self.head)
-        self.head = node
-    
-    def insert_middle(self,idx,data):
-        count = 0
-        itr = self.head
-        while itr:
-            if count == idx-1:
-                node = Node(data,itr.next)
-                itr.next = node
-            itr = itr.next
-            count+=1
+    def get_child(self,child):
+        child.parent = self
+        self.children.append(child)
 
-    def remove_middle(self,idx,data):
-        count = 0
-        if idx == 0:
-            self.head = Node(data,self.head)
-            return
-        itr = self.head
-        while itr:
-            if count == idx-1:
-                node = Node(data,itr.next.next)
-                itr.next = node
-            itr = itr.next
-            count+=1
+    def get_level(self):
+        level = 0
+        p = self.parent
+        while p:
+            level+=1
+            p = p.parent
+        return level
 
-        def print(self):
-            if self.head is None:
-                print('It is empty linked list!')
-                return
-            itr = self.head
-            llstr = ''
-            while itr:
-                llstr += str(itr.data) + '-->'
-                itr = itr.next
-            print(llstr)
+
+
+    def print_tree(self):
+        spaces = " " * self.get_level() * 2
+        prefix = spaces + '|__' if self.parent else ""
+        print(prefix + self.data)
+        if self.children:
+            for child in self.children:
+                child.print_tree()
+
+def buildTree():
+    root = TreeNode("Electronics")
+
+    laptop = TreeNode("Laptop")
+    laptop.get_child(TreeNode('HP'))
+    laptop.get_child(TreeNode('Mac'))
+
+    cellphone = TreeNode("Cell Phone")
+    cellphone.get_child(TreeNode('samsung'))
+    cellphone.get_child(TreeNode('iphone'))
+
+    tv = TreeNode('TV')
+    tv.get_child(TreeNode('LG'))
+    tv.get_child(TreeNode('MI'))
+
+    root.get_child(laptop)
+    root.get_child(cellphone)
+    root.get_child(tv)
+
+    return root
+
+if __name__ == '__main__':
+    root = buildTree()
+    root.print_tree()
 
         
