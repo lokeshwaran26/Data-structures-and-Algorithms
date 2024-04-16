@@ -1,54 +1,106 @@
-class TreeNode:
+class BinarySearchTree:
+    
     def __init__(self,data):
         self.data = data
-        self.children = []
-        self.parent = None
+        self.left = None
+        self.right = None
 
-    def get_child(self,child):
-        child.parent = self
-        self.children.append(child)
+    def addchild(self,data):
+        if data == self.data:
+            return False
+        
+        if data < self.data:
+            if self.left:
+                self.left.addchild(data)
 
-    def get_level(self):
-        level = 0
-        p = self.parent
-        while p:
-            level+=1
-            p = p.parent
-        return level
+            else:
+                self.left = BinarySearchTree(data)
 
+        else:
+            if self.right:
+                  self.right.addchild(data)
 
+            else:
+                self.right = BinarySearchTree(data)
 
-    def print_tree(self):
-        spaces = " " * self.get_level() * 2
-        prefix = spaces + '|__' if self.parent else ""
-        print(prefix + self.data)
-        if self.children:
-            for child in self.children:
-                child.print_tree()
+    def search(self,data):
+        if data == self.data:
+            return True
+        
+        if data < self.data:
+            if self.left:
+                return self.left.search(data)
+            
+            else:
+                return False
+            
+        if data > self.data:
+            if self.right:
+                return self.right.search(data)
+            
+            else:
+                return False
+            
+    def inOrderTraversal(self):
+        elements = []
+        if self.left:
+            elements += self.left.inOrderTraversal()
 
-def buildTree():
-    root = TreeNode("Electronics")
+        elements.append(self.data)
+        if self.right:
+            elements += self.right.inOrderTraversal()
+        return elements
 
-    laptop = TreeNode("Laptop")
-    laptop.get_child(TreeNode('HP'))
-    laptop.get_child(TreeNode('Mac'))
+    def find_max(self):
+        if self.right is None:
+            return self.data
+        return self.right.find_max()
 
-    cellphone = TreeNode("Cell Phone")
-    cellphone.get_child(TreeNode('samsung'))
-    cellphone.get_child(TreeNode('iphone'))
+    def find_min(self):
+        if self.left is None:
+            return self.data
+        return self.left.find_min()
+    
+    def delete(self,val):
+        if val < self.data:
+            if self.left:
+                self.left.delete(val)
 
-    tv = TreeNode('TV')
-    tv.get_child(TreeNode('LG'))
-    tv.get_child(TreeNode('MI'))
+        elif val > self.data:
+            if self.right:
+                self.right.delete(val)
 
-    root.get_child(laptop)
-    root.get_child(cellphone)
-    root.get_child(tv)
+        else:
+
+            if self.left is None and self.right is None:
+                return None
+
+            if self.left is None:
+                return self.right
+
+            if self.right is None:
+                return self.right
+
+            min_val = self.right.find_min()
+            self.data = min_val
+            self.right = self.right.delete(min_val)
+
+        return self
+        
+
+def buildTree(elements):
+    root = BinarySearchTree(elements[0])
+    for i in range(1, len(elements)):
+        root.addchild(elements[i])
 
     return root
 
-if __name__ == '__main__':
-    root = buildTree()
-    root.print_tree()
 
-        
+if __name__ == '__main__':
+    nums = [ 7, 1, 4, 5, 6, 8, 2]
+    root1 = buildTree(nums)
+    print(root1.inOrderTraversal())
+    print(root1.search(4))
+    root1.delete(6)
+    print(root1.inOrderTraversal())
+            
