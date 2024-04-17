@@ -4,7 +4,7 @@ class BinarySearchTree:
         self.left = None
         self.right = None
 
-    def add_child(self,data):
+    def add_child(self, data):
         if data == self.data:
             return
 
@@ -22,16 +22,16 @@ class BinarySearchTree:
             else:
                 self.right = BinarySearchTree(data)
 
-    def search(self,val):
+    def search(self, val):
         if self.data == val:
             return True
-        
+
         if val < self.data:
             if self.left:
                 return self.left.search(val)
             else:
                 return False
-            
+
         if val > self.data:
             if self.right:
                 return self.right.search(val)
@@ -46,22 +46,21 @@ class BinarySearchTree:
         elements.append(self.data)
 
         if self.right:
-            elements+= self.right.in_orderTraversal()
-        
+            elements += self.right.in_orderTraversal()
+
         return elements
-    
 
     def find_max(self):
         if self.right is None:
             return self.data
         return self.right.find_max()
-    
+
     def find_min(self):
         if self.left is None:
             return self.data
-        
+
         return self.left.find_min()
-    
+
     def delete(self, val):
         if val < self.data:
             if self.left:
@@ -92,6 +91,21 @@ class BinarySearchTree:
 
         return self
 
+    def insert(self, val):
+        if val < self.data:
+            if self.left:
+                self.left = self.left.insert(val)
+            else:
+                self.left = BinarySearchTree(val)
+
+        if val > self.data:
+            if self.right:
+                self.right = self.right.insert(val)
+            else:
+                self.right = BinarySearchTree(val)
+
+        return self
+
 
 def build_tree(elements):
     root = BinarySearchTree(elements[0])
@@ -109,7 +123,6 @@ if __name__ == '__main__':
     print(root1.search(4))
     root1.delete(20)
     root1.delete(9)
+    root1.insert(16)
+    root1.insert(23)
     print(root1.in_orderTraversal())
-
-
-
