@@ -123,6 +123,4 @@ if __name__ == '__main__':
     print(root1.search(4))
     root1.delete(20)
     root1.delete(9)
-    root1.insert(16)
-    root1.insert(23)
     print(root1.in_orderTraversal())
